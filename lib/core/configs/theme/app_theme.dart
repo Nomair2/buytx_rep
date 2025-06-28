@@ -8,10 +8,10 @@ class AppTheme {
 
     fontFamily: 'Hacen Tunisia',
     scaffoldBackgroundColor: AppColors.lightBackground,
-
     secondaryHeaderColor: Color(0xff12ADD8),
     colorScheme: ColorScheme.dark(
       onSurface: Color(0xffE8ECE8),
+      surfaceContainer: Color(0xffEDE059),
       primaryFixed: AppColors.lightPrimary,
       primaryFixedDim: Colors.grey,
       surface: AppColors.lightBackground,
@@ -36,6 +36,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.darkBackground,
     textTheme: AppText.darkText,
     colorScheme: ColorScheme.dark(
+      surfaceContainer: Color(0xff00467C).withOpacity(0.35),
       primaryFixed: Colors.white,
       primaryFixedDim: AppColors.darkPrimary,
       onSurface: AppColors.darkBackground,

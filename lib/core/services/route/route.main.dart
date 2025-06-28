@@ -71,6 +71,29 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/eveluation',
+      name: EveluationPage.name,
+      builder: (context, state) {
+        return EveluationPage();
+      },
+    ),
+
+    GoRoute(
+      path: '/addeveluation',
+      name: AddEveluationPage.name,
+      builder: (context, state) {
+        return AddEveluationPage();
+      },
+    ),
+
+    GoRoute(
+      path: '/reportPage',
+      name: ReportPage.name,
+      builder: (context, state) {
+        return ReportPage();
+      },
+    ),
+    GoRoute(
       path: '/auth/new-password',
       name: 'new-password',
       builder: (context, state) {
@@ -123,6 +146,13 @@ final GoRouter router = GoRouter(
       name: VerificationReqPage.name,
       builder: (context, state) {
         return VerificationReqPage();
+      },
+    ),
+    GoRoute(
+      path: '/notification',
+      name: NotificationPage.name,
+      builder: (context, state) {
+        return NotificationPage();
       },
     ),
 

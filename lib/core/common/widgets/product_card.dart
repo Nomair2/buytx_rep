@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -62,7 +62,7 @@ class ProductCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(90),
                         ),
                         child: const Center(
@@ -96,7 +96,7 @@ class ProductCard extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
                     decoration: BoxDecoration(
                       color:
-                          changeColor!
+                          (changeColor ?? false)
                               ? Theme.of(context).secondaryHeaderColor
                               : Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(20),
@@ -108,14 +108,14 @@ class ProductCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      price!.isNotEmpty
+                      (price?.isNotEmpty ?? false)
                           ? Container(
                             width:
                                 isLandscape
                                     ? size.width * 0.1
                                     : size.width * 0.15,
                             child: Text(
-                              "${price!}\$  ",
+                              "${price ?? ''}\$  ",
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               style: TextStyle(
@@ -125,7 +125,7 @@ class ProductCard extends StatelessWidget {
 
                                 fontWeight: FontWeight.bold,
                                 color:
-                                    changeColor!
+                                    (changeColor ?? false)
                                         ? Theme.of(context).secondaryHeaderColor
                                         : Theme.of(context).primaryColor,
                               ),
@@ -157,7 +157,7 @@ class ProductCard extends StatelessWidget {
                           Icon(
                             Icons.access_time,
                             color:
-                                changeColor!
+                                (changeColor ?? false)
                                     ? Theme.of(context).secondaryHeaderColor
                                     : Theme.of(context).primaryColor,
                           ),
@@ -182,7 +182,7 @@ class ProductCard extends StatelessWidget {
                             decoration: TextDecoration.none,
                             fontWeight: FontWeight.w600,
                             color:
-                                changeColor!
+                                (changeColor ?? false)
                                     ? Theme.of(context).secondaryHeaderColor
                                     : Theme.of(context).primaryColor,
                           ),
@@ -213,7 +213,7 @@ class ProductCard extends StatelessWidget {
                           Icon(
                             Icons.person,
                             color:
-                                changeColor!
+                                (changeColor ?? false)
                                     ? Theme.of(context).secondaryHeaderColor
                                     : Theme.of(context).primaryColor,
                           ),

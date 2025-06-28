@@ -1,8 +1,12 @@
+import 'package:buytx/core/configs/assets/app_image.dart';
+import 'package:buytx/src/notification/presentation/pages/notification_page.dart';
+import 'package:buytx/src/verification/presentation/pages/verification_req_page.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:buytx/core/configs/theme/theme_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
@@ -17,10 +21,13 @@ class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Theme.of(context).colorScheme.surfaceContainer.w,
       body: Container(
         width: 300,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor.withValues(alpha: 0.5),
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainer.withOpacity(0.35),
         ),
         child: SafeArea(
           child: Padding(
@@ -50,7 +57,7 @@ class _SideBarState extends State<SideBar> {
                         children: [
                           const CircleAvatar(
                             radius: 32,
-                            backgroundImage: AssetImage('assets/avatar.png'),
+                            backgroundImage: AssetImage(AppImage.psersonImage),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -124,7 +131,12 @@ class _SideBarState extends State<SideBar> {
                             'منتجاتي',
                           ),
                           _buildMenuItem(Icons.chat, 'الرسائل'),
-                          _buildMenuItem(Icons.notifications_none, 'الإشعارات'),
+                          _buildMenuItem(
+                            Icons.notifications_none,
+                            'الإشعارات',
+                            ontap:
+                                () => context.pushNamed(NotificationPage.name),
+                          ),
                         ],
                       ),
                     ),
@@ -147,7 +159,13 @@ class _SideBarState extends State<SideBar> {
                             Icons.person_add_alt_sharp,
                             'المتابعين',
                           ),
-                          _buildMenuItem(Icons.verified, 'توثيق الحساب'),
+                          _buildMenuItem(
+                            Icons.verified,
+                            'توثيق الحساب',
+                            ontap:
+                                () =>
+                                    context.pushNamed(VerificationReqPage.name),
+                          ),
                         ],
                       ),
                     ),
@@ -399,7 +417,7 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String label) {
+  Widget _buildMenuItem(IconData icon, String label, {void Function()? ontap}) {
     return ListTile(
       leading: Icon(icon, color: Theme.of(context).colorScheme.primaryFixed),
       title: Text(
@@ -409,7 +427,7 @@ class _SideBarState extends State<SideBar> {
           color: Theme.of(context).colorScheme.onSecondary,
         ),
       ),
-      onTap: () {},
+      onTap: ontap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       dense: true,
     );

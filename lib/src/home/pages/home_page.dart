@@ -4,7 +4,8 @@ import 'package:buytx/src/chat/presentaion/bloc/getMessages/messages_bloc.dart';
 import 'package:buytx/src/chat/presentaion/bloc/getMessages/messsages_events.dart';
 import 'package:buytx/src/filtering/presentaion/popuUp/filtering_popup.dart';
 import 'package:buytx/src/filtering/presentaion/popuUp/popup2.dart';
-import 'package:buytx/src/side_bar/presentation/pages/side_bar.dart';
+import 'package:buytx/src/notification/presentation/pages/notification_page.dart';
+import 'package:buytx/src/home/pages/side_bar.dart';
 import 'package:buytx/src/verification/presentation/pages/verification_req_page.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -335,19 +336,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Row(
       children: [
         CustomSmallButton(
-          colorIcon: Colors.black,
-          colors: Colors.white,
+          colorIcon: Theme.of(context).colorScheme.onSecondary,
+          colors: Theme.of(context).colorScheme.primaryContainer,
           icons: Icons.notifications_outlined,
-          onPressed: () {
-            context.pushNamed(VerificationReqPage.name);
-          },
+          onPressed: () => context.pushNamed(NotificationPage.name),
           radius: 8,
           size: 30,
         ),
         const SizedBox(width: 10),
         CustomSmallButton(
-          colorIcon: Colors.black,
-          colors: Colors.white,
+          colorIcon: Theme.of(context).colorScheme.onSecondary,
+          colors: Theme.of(context).colorScheme.primaryContainer,
           icons: Icons.tune,
           onPressed: () {
             showDialog(context: context, builder: (context) => Popup2());
@@ -393,7 +392,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 suffixIcon: Icon(
                   // Ionicons.ios_search,
                   CupertinoIcons.search,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.onSecondary,
                 ),
               ),
             ),
@@ -401,7 +400,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
         const SizedBox(width: 10),
         CustomSmallButton(
-          colorIcon: Theme.of(context).colorScheme.inversePrimary,
+          colorIcon: Theme.of(context).colorScheme.onSecondary,
           colors: Theme.of(context).colorScheme.primaryContainer,
           icons: Icons.segment,
           onPressed: () {

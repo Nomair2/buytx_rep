@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:buytx/core/common/singletons/cache.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,12 +11,23 @@ class CacheHelper {
   static const _sessionTokenKey = 'user-session-token';
   static const _userIdKey = 'user-id';
   static const _firstTimerKey = 'is-user-first-timer';
+  static const _themeKey = 'is-dark';
 
   Future<bool> cacheSessionToken(String token) async {
     try {
       final result = await _prefs.setString(_sessionTokenKey, token);
       cacheFirstTimer(false);
       Cache.instance.setSessionToken(token);
+      return result;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> cacheTheme(bool isDark) async {
+    try {
+      final result = await _prefs.setBool(_themeKey, isDark);
+      Cache.instance.setTheme(isDark);
       return result;
     } catch (_) {
       return false;
@@ -41,6 +54,14 @@ class CacheHelper {
       Cache.instance.setIdUser(userId);
     }
     return userId;
+  }
+
+  bool? getTheme() {
+    final theme = _prefs.getBool(_themeKey);
+    if (theme case Bool()) {
+      Cache.instance.setTheme(theme);
+    }
+    return theme;
   }
 
   String? getSessionToken() {
