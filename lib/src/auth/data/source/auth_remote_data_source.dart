@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:buytx/core/utils/error_response.dart';
 import 'package:buytx/core/utils/typedefs.dart';
 import 'package:buytx/src/auth/data/model/user_data_model.dart';
 import 'package:buytx/src/auth/domain/entity/userRequest.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDataSource {
@@ -42,7 +44,7 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
         headers: NetworkConstants.header,
       );
 
-      final payload = jsonDecode(response.body) as DataMap;
+      final payload = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
         final errorResponse = ErrorResponse.fromMap(payload);
@@ -53,6 +55,7 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
       }
       print(payload);
       UserModel user = UserModel.fromMap(payload);
+      print("ddddddddddddddddddddddd");
       print(user.userData!.id);
       print(user.userData!.id);
       print(user.userData!.id);
@@ -193,6 +196,11 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
       throw ServerExceptions(message: 'please , try again ', statusCode: 500);
     }
   }
+
+  //Until server side implements it.
+  // Future<int> authWithGoogle() async {
+  //   final GoogleSignIn signIn = GoogleSignIn.instance;
+  // }
 }
 
 // final response = await _client.get(

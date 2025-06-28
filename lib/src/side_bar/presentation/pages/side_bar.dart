@@ -1,3 +1,5 @@
+import 'package:buytx/src/chat/presentaion/pages/all_chat_page.dart';
+import 'package:buytx/src/chat/presentaion/widgets/status_message.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +125,18 @@ class _SideBarState extends State<SideBar> {
                             Icons.shopping_bag_outlined,
                             'منتجاتي',
                           ),
-                          _buildMenuItem(Icons.chat, 'الرسائل'),
+                          _buildMenuItem(
+                            Icons.chat,
+                            'الرسائل',
+                            onPressed: () {
+                              print("hey");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AllChatPage(),
+                                ),
+                              );
+                            },
+                          ),
                           _buildMenuItem(Icons.notifications_none, 'الإشعارات'),
                         ],
                       ),
@@ -399,7 +412,11 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String label) {
+  Widget _buildMenuItem(
+    IconData icon,
+    String label, {
+    void Function()? onPressed,
+  }) {
     return ListTile(
       leading: Icon(icon, color: Theme.of(context).colorScheme.primaryFixed),
       title: Text(
@@ -409,7 +426,7 @@ class _SideBarState extends State<SideBar> {
           color: Theme.of(context).colorScheme.onSecondary,
         ),
       ),
-      onTap: () {},
+      onTap: onPressed,
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       dense: true,
     );

@@ -18,7 +18,6 @@ abstract class ChatRemoteDataSource {
 
   Future<List<MessageModel>> getMessages(MessageParms params);
 
-  Future<UploadMessageModel> uploadMessage(MessageUpload params);
 
   // Future<String> uploadChatMedia(UploadChatMediaModel params);
 }
@@ -113,46 +112,5 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
     }
   }
 
-  @override
-  Future<UploadMessageModel> uploadMessage(MessageUpload params) async {
-    print("in bloc source data 1 ");
-    try {
-      final url = Uri.parse(
-        '${NetworkConstants.baseUrl}$getMessageUploadEndpoint',
-      );
-      print(url);
-      print("in bloc source data 2 ");
-      final response = await _client.post(
-        url,
-        body: {},
-        headers: {
-          'Authorization': 'Bearer ${params.token}',
-          'Content-Type': 'application/json',
-        },
-      );
-      if (response.statusCode != 200) {
-        print("in bloc source data 3 ");
-        final payload = jsonDecode(response.body) as DataMap;
-        final errorResponse = ErrorResponse.fromMap(payload);
-        throw ServerExceptions(
-          message: errorResponse.errorMessage,
-          statusCode: response.statusCode,
-        );
-      }
-      print(response.body);
-      final dataReturn = jsonDecode(response.body);
-      print(dataReturn);
-      print("1");
-      UploadMessageModel data = UploadMessageModel.fromMap(dataReturn);
-      print("in bloc source data 4 ");
-      return data;
-    } on ServerExceptions {
-      rethrow;
-    } catch (e, s) {
-      print("in bloc source data 5 ");
-      debugPrint(e.toString());
-      debugPrintStack(stackTrace: s);
-      throw ServerExceptions(message: 'please , try again ', statusCode: 500);
-    }
-  }
+
 }

@@ -25,7 +25,6 @@ Future<void> _chatInit() async {
   sl
     ..registerLazySingleton(() => GetChatsUseCase(sl()))
     ..registerLazySingleton(() => GetMessagesUseCase(sl()))
-    ..registerLazySingleton(() => UploadMessageUseCase(sl()))
     ..registerLazySingleton<ChatRemoteDataSource>(
       () => ChatRemoteDataSourceImp(sl()),
     )

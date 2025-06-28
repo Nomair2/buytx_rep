@@ -4,6 +4,7 @@ import 'package:buytx/src/chat/presentaion/bloc/getMessages/messages_bloc.dart';
 import 'package:buytx/src/chat/presentaion/bloc/getMessages/messsages_events.dart';
 import 'package:buytx/src/filtering/presentaion/popuUp/filtering_popup.dart';
 import 'package:buytx/src/filtering/presentaion/popuUp/popup2.dart';
+import 'package:buytx/src/home/domain/products/bloc/products_bloc.dart';
 import 'package:buytx/src/side_bar/presentation/pages/side_bar.dart';
 import 'package:buytx/src/verification/presentation/pages/verification_req_page.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     context.read<messagesBloc>().add(MessagesLoadingEvent());
+    context.read<ProductsBloc>().add(FetchProducts());
     WidgetsBinding.instance.addObserver(this);
     scrollContainer.addListener(onScroll);
   }
@@ -213,38 +215,50 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 flexibleSpace: _categories(context, size, changeColor),
               ),
             ],
-        body: GridView.builder(
-          padding: EdgeInsets.only(bottom: size.height * 0.08),
-          physics: const AlwaysScrollableScrollPhysics(),
+        body: BlocConsumer<ProductsBloc, ProductsState>(
+          listener: (context, state) {
+            // TODO: implement listener
+          },
+          builder: (context, state) {
+            if (state is ProductsReady) {
+              return GridView.builder(
+                padding: EdgeInsets.only(bottom: size.height * 0.08),
+                physics: const AlwaysScrollableScrollPhysics(),
 
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount:
-                MediaQuery.of(context).orientation == Orientation.landscape
-                    ? 3
-                    : 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio:
-                MediaQuery.of(context).orientation == Orientation.landscape
-                    ? 0.85
-                    : 0.6,
-          ),
-          itemCount: 6,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                context.pushNamed(DetailProductPage.name);
-              },
-              child: ProductCard(
-                changeColor: changeColor,
-                imagePath: 'assets/images/Rectangle.png',
-                location: 'حمص',
-                nameOwner: 'أغيد علوان',
-                nameProduct: 'iphone 16 pro',
-                price: '1500',
-                timing: '10',
-              ),
-            );
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation ==
+                              Orientation.landscape
+                          ? 3
+                          : 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio:
+                      MediaQuery.of(context).orientation ==
+                              Orientation.landscape
+                          ? 0.85
+                          : 0.6,
+                ),
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      context.pushNamed(DetailProductPage.name);
+                    },
+                    child: ProductCard(
+                      changeColor: changeColor,
+                      imagePath: 'assets/images/Rectangle.png',
+                      location: 'حمص',
+                      nameOwner: 'أغيد علوان',
+                      nameProduct: 'iphone 16 pro',
+                      price: '1500',
+                      timing: '10',
+                    ),
+                  );
+                },
+              );
+            }
+            return CircularProgressIndicator();
           },
         ),
       ),

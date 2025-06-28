@@ -26,8 +26,7 @@ class _AllChatPageState extends State<AllChatPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    context.read<messagesBloc>()..add(FetchChatsEvent(pagginationNum: "0"));
+    context.read<messagesBloc>().add(FetchChatsEvent(pagginationNum: "0"));
     super.initState();
   }
 

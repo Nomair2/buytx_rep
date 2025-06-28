@@ -50,10 +50,7 @@ final GoRouter router = GoRouter(
       path: '/home',
       name: HomePage.name,
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) => messagesBloc(),
-          child: HomePage(),
-        );
+        return HomePage();
       },
     ),
     GoRoute(

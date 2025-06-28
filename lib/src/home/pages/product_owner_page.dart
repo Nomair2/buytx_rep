@@ -321,6 +321,8 @@ class _ProductOwnerPageState extends State<ProductOwnerPage> {
                       imagePath: 'assets/images/Rectangle.png',
                       location: '',
                       nameOwner: '',
+                      changeColor: false,
+
                       nameProduct: '',
                       price: '',
                       timing: '',

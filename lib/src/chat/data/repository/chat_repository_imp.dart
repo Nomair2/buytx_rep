@@ -50,22 +50,6 @@ class ChatRepositoryImp extends ChatRepository {
     }
   }
 
-  @override
-  ResultFuture<UploadChatMediaEntity> UploadMessage(
-    MessageUpload upload,
-  ) async {
-    print("in bloc repository data 1 ");
-    try {
-      final UploadMessageModel dataReturn = await _chatRemoteDataSource
-          .uploadMessage(upload);
-      UploadChatMediaEntity data = fromUploadMessageModel(dataReturn);
-      print("in bloc repository data 2 ");
-      return Right(data);
-    } on ServerExceptions catch (e) {
-      print("in bloc repository data 3 ");
-      return Left(ServerFailure.fromException(e));
-    }
-  }
 
   // @override
   // ResultFuture<String> UploadChatMedia(UploadChatMediaEntity params) async{

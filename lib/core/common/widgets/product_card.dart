@@ -8,14 +8,14 @@ class ProductCard extends StatelessWidget {
   final String? price;
   final String nameOwner;
   final String location;
-  final bool? changeColor;
+  final bool changeColor;
   ProductCard({
     required this.imagePath,
     required this.nameProduct,
     required this.timing,
     this.price,
     required this.nameOwner,
-    this.changeColor,
+    required this.changeColor,
     required this.location,
   });
   @override

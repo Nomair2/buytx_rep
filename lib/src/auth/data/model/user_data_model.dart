@@ -5,8 +5,6 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-UserModel userFromMap(String str) => UserModel.fromMap(json.decode(str));
-
 // String userToMap(UserModel data) => json.encode(data.toMap());
 
 class UserModel {
@@ -17,12 +15,14 @@ class UserModel {
 
   UserModel({this.success, this.msg, this.token, required this.userData});
 
-  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-    success: json["success"],
-    msg: json["msg"],
-    token: json["token"],
-    userData: UserDataModel.fromMap(json["userData"]),
-  );
+  factory UserModel.fromMap(Map<String, dynamic> json) {
+    return UserModel(
+      success: json["success"],
+      msg: json["msg"],
+      token: json["token"],
+      userData: UserDataModel.fromMap(json["userData"]),
+    );
+  }
 
   // Map<String, dynamic> toMap() => {
   //   "success": success,
@@ -91,35 +91,44 @@ class UserDataModel {
     this.sections,
   });
 
-  factory UserDataModel.fromMap(Map<String, dynamic> json) => UserDataModel(
-    rate: RateModel.fromMap(json["rate"]),
-    phoneVisible: json["phoneVisible"],
-    id: json["_id"],
-    email: json["email"],
-    username: json["username"],
-    fullName: json["fullName"],
-    phone: json["phone"],
-    authProvider: List<String>.from(json["authProvider"].map((x) => x)),
-    activated: json["activated"],
-    verificationCode: json["verificationCode"],
-    numberOfAlerts: json["numberOfAlerts"],
-    state: json["state"],
-    verifiedStatus: json["verifiedStatus"],
-    followers: List<dynamic>.from(json["followers"].map((x) => x)),
-    following: List<dynamic>.from(json["following"].map((x) => x)),
-    role: json["role"],
-    numberOfReports: json["numberOfReports"],
-    favourites: List<dynamic>.from(json["favourites"].map((x) => x)),
-    blockedUsers: List<dynamic>.from(json["blockedUsers"].map((x) => x)),
-    joinedDate: DateTime.parse(json["joinedDate"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-    verificationCodeExpires: DateTime.parse(json["verificationCodeExpires"]),
-    lastLoginTime: json["lastLoginTime"],
-    fcmTokens: List<String>.from(json["fcmTokens"].map((x) => x)),
-    sections: List<dynamic>.from(json["sections"].map((x) => x)),
-  );
+  factory UserDataModel.fromMap(Map<String, dynamic> json) {
+    try {
+      return UserDataModel(
+        rate: RateModel.fromMap(json["rate"]),
+        phoneVisible: json["phoneVisible"],
+        id: json["_id"],
+        email: json["email"],
+        username: json["username"],
+        fullName: json["fullName"],
+        phone: json["phone"],
+        authProvider: List<String>.from(json["authProvider"].map((x) => x)),
+        activated: json["activated"],
+        verificationCode: json["verificationCode"],
+        numberOfAlerts: json["numberOfAlerts"],
+        state: json["state"],
+        verifiedStatus: json["verifiedStatus"],
+        // followers: List<dynamic>.from(json["followers"].map((x) => x)),
+        // following: List<dynamic>.from(json["following"].map((x) => x)),
+        role: json["role"],
+        numberOfReports: json["numberOfReports"],
+        favourites: List<dynamic>.from(json["favourites"].map((x) => x)),
+        blockedUsers: List<dynamic>.from(json["blockedUsers"].map((x) => x)),
+        joinedDate: DateTime.tryParse(json["joinedDate"].toString()),
+        createdAt: DateTime.tryParse(json["createdAt"].toString()),
+        updatedAt: DateTime.tryParse(json["updatedAt"].toString()),
+        v: json["__v"],
+        verificationCodeExpires: DateTime.tryParse(
+          json["verificationCodeExpires"].toString(),
+        ),
+        lastLoginTime: json["lastLoginTime"],
+        fcmTokens: List<String>.from(json["fcmTokens"].map((x) => x)),
+        sections: List<dynamic>.from(json["sections"].map((x) => x)),
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 
   // Map<String, dynamic> toMap() => {
   //   "rate": rate.toMap(),

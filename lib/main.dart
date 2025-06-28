@@ -1,3 +1,5 @@
+import 'package:buytx/src/chat/presentaion/bloc/getMessages/messages_bloc.dart';
+import 'package:buytx/src/home/domain/products/bloc/products_bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthBloc()..add(AuthCheckStatusEvent()),
         ),
         BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
+        BlocProvider<messagesBloc>(create: (context) => messagesBloc()),
+        BlocProvider<ProductsBloc>(create: (context) => ProductsBloc()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

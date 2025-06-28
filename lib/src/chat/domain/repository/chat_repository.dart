@@ -11,7 +11,6 @@ abstract class ChatRepository {
 
   ResultFuture<List<MessageEntity>> getMessages(MessageParms params);
 
-  ResultFuture<UploadChatMediaEntity> UploadMessage(MessageUpload upload);
 
   // ResultFuture<String> UploadChatMedia(UploadChatMediaEntity params);
 }

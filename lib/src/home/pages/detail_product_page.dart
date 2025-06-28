@@ -408,7 +408,7 @@ class DetailProductPage extends StatelessWidget {
               return ProductCard(
                 imagePath: 'assets/images/Rectangle.png',
                 location: '',
-
+                changeColor: false,
                 nameOwner: '',
                 nameProduct: '',
                 price: '',

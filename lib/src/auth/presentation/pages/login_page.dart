@@ -28,6 +28,7 @@ class LoginPage extends StatelessWidget {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final GlobalKey<FormState> _keyLogin = GlobalKey<FormState>();
+  bool securePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +68,23 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: size.height * 0.015),
                   FadeInLeft(
                     duration: Duration(milliseconds: 800),
-                    child: BlocBuilder<PasswordVisibilityCubit, bool>(
-                      builder: (context, state) {
+                    child: StatefulBuilder(
+                      builder: (context, setState) {
                         return AuthTextField(
                           controller: password,
                           text: 'كلمة المرور',
                           validtor:
                               (value) =>
                                   SignupValidator.validatePassword(value),
-                          scure: state,
+                          scure: securePassword,
                           preIcon: IconButton(
-                            onPressed:
-                                () =>
-                                    context
-                                        .read<PasswordVisibilityCubit>()
-                                        .toggleVisibility(),
+                            onPressed: () {
+                              setState(() {
+                                securePassword = !securePassword;
+                              });
+                            },
                             icon: Icon(
-                              state
+                              securePassword
                                   ? CupertinoIcons.eye_slash_fill
                                   : CupertinoIcons.eye_fill,
                               color: Theme.of(context).primaryColor,

@@ -30,7 +30,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   @override
   void initState() {
-    context.read<messagesBloc>()..add(
+    context.read<messagesBloc>().add(
       FetchMesssagesEvent(id: widget.userChatEntity!.id, pagginationNum: '0'),
     );
     super.initState();

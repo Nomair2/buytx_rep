@@ -19,7 +19,8 @@ import 'package:buytx/src/chat/presentaion/bloc/getMessages/messsages_events.dar
 class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
   List<MessageEntity> messages = [];
   List<UserChatEntity> chats = [];
-  late IO.Socket socket;
+  //TODO: Move to data layer.
+  IO.Socket? socket; //Never use late.
   bool _isDisposed = false;
   bool opening = false;
 
@@ -30,7 +31,6 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
     on<ReceiveMessageEvent>(_receiveMessage);
     on<ReadMessageEvent>(_readMessage);
     on<ChangeStatusEvent>(_changeStatusEvent);
-    on<UploadMessageEvent>(_uploadMessage);
     on<FetchChatsEvent>(_fetchChats);
     on<CloseEvent>(_closeEvent);
     // on<LastSeenEvent>(_lastSeenEvent);
@@ -49,31 +49,33 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
           .setAuth({'token': token})
           .build(),
     );
+    if (socket == null) {
+      emit(MessagesError("Couldn't initiate a connection"));
+    }
+    socket!.connect();
 
-    socket.connect();
-
-    socket.onConnect((_) {
-      print('Socket connect : ${socket.id}');
+    socket!.onConnect((_) {
+      print('Socket connect : ${socket!.id}');
     });
 
-    socket.onDisconnect((_) {
+    socket!.onDisconnect((_) {
       print('Socket disconnect ');
     });
 
-    socket.emit('signin', token);
+    socket!.emit('signin', token);
 
     print("-----listen for all event you want  ----- ");
-    socket.on('LoadNewMessage', (data) {
+    socket!.on('LoadNewMessage', (data) {
       print("from LoadNewMessage is : ${data}");
       add(ReceiveMessageEvent(message: data));
     });
 
-    socket.on('receive', (data) {
+    socket!.on('receive', (data) {
       print("from receive is : ${data}");
       add(ReceiveMessageEvent(message: data));
     });
 
-    socket.on('lastSeenUpdate', (data) {
+    socket!.on('lastSeenUpdate', (data) {
       print("-------------------from lastSeenUpdate event ---------------");
       print(data);
       add(
@@ -81,7 +83,7 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
       );
     });
 
-    socket.on('changeMessageStatus', (data) {
+    socket!.on('changeMessageStatus', (data) {
       print(
         "-------------------from changeMessageStatus event ---------------",
       );
@@ -91,7 +93,9 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
   }
 
   _closeEvent(CloseEvent event, emit) {
-    socket.disconnect();
+    if (socket != null) {
+      socket!.disconnect();
+    }
   }
 
   @override
@@ -104,10 +108,13 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
   }
 
   void _removeSocketListeners() {
-    socket.off('LoadNewMessage');
-    socket.off('changeMessageStatus');
-    socket.off('lastSeenUpdate');
-    socket.off('receive');
+    if (socket != null) {
+      socket!.off('LoadNewMessage');
+      socket!.off('changeMessageStatus');
+      socket!.off('lastSeenUpdate');
+      socket!.off('receive');
+    }
+
     // socket.disconnect();
 
     // _cket.off('error');
@@ -128,7 +135,7 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
       print(i.receiver);
       if (i.status != 'read' && i.receiver == id) {
         print("from loop is ${i.status}");
-        socket.emit('messageRead', {'_id': i.id});
+        socket!.emit('messageRead', {'_id': i.id});
       }
     }
   }
@@ -185,26 +192,9 @@ class messagesBloc extends Bloc<MesssagesEvents, MessagesStates> {
 
     try {
       print("1");
-      socket.emit('sendMessage', newMessage);
+      socket!.emit('sendMessage', newMessage);
     } catch (e) {
       print("Error sending message: $e");
-    }
-  }
-
-  _uploadMessage(UploadMessageEvent event, emit) async {
-    String? token = sl<CacheHelper>().getSessionToken();
-    try {
-      Either<Failure, UploadChatMediaEntity> dataReturn =
-          await sl<UploadMessageUseCase>().call(
-            MessageUpload(event.fileName, event.contentType, token!),
-          );
-
-      dataReturn.fold(
-        (failure) => emit(MessagesError(failure.errorMessage)),
-        (messagesList) {},
-      );
-    } catch (e) {
-      print("Error in fetch messages: $e");
     }
   }
 
