@@ -16,10 +16,6 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
     text: 'حساب فردي (شخصي)',
   );
 
-  int selectedMonth = DateTime.now().month;
-  int selectedDay = DateTime.now().day;
-  int selectedYear = DateTime.now().year;
-
   int _currentStep = 0;
 
   // Stage 1
