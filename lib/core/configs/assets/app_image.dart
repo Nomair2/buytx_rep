@@ -10,4 +10,5 @@ class AppImage {
   static const newPasswordImage = '${basePath}newPassword$pngFormat';
   static const logo = '${basePath}logo$pngFormat';
   static const text = '${basePath}text$pngFormat';
+  static const psersonImage = '${basePath}person$pngFormat';
 }

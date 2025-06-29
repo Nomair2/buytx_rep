@@ -53,6 +53,21 @@ final GoRouter router = GoRouter(
         return HomePage();
       },
     ),
+
+    GoRoute(
+      path: '/productDetailPage1',
+      name: ProductDetailPage1.name,
+      builder: (context, state) {
+        return ProductDetailPage1();
+      },
+    ),
+    GoRoute(
+      path: '/ProductDetailPage2',
+      name: ProductDetailPage2.name,
+      builder: (context, state) {
+        return ProductDetailPage2();
+      },
+    ),
     GoRoute(
       path: '/detail/productOwnerPage',
       name: ProductOwnerPage.name,
@@ -65,6 +80,29 @@ final GoRouter router = GoRouter(
       name: DetailProductPage.name,
       builder: (context, state) {
         return DetailProductPage();
+      },
+    ),
+    GoRoute(
+      path: '/eveluation',
+      name: EveluationPage.name,
+      builder: (context, state) {
+        return EveluationPage();
+      },
+    ),
+
+    GoRoute(
+      path: '/addeveluation',
+      name: AddEveluationPage.name,
+      builder: (context, state) {
+        return AddEveluationPage();
+      },
+    ),
+
+    GoRoute(
+      path: '/reportPage',
+      name: ReportPage.name,
+      builder: (context, state) {
+        return ReportPage();
       },
     ),
     GoRoute(
@@ -120,6 +158,13 @@ final GoRouter router = GoRouter(
       name: VerificationReqPage.name,
       builder: (context, state) {
         return VerificationReqPage();
+      },
+    ),
+    GoRoute(
+      path: '/notification',
+      name: NotificationPage.name,
+      builder: (context, state) {
+        return NotificationPage();
       },
     ),
 

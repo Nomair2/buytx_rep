@@ -10,7 +10,6 @@ import 'package:buytx/core/utils/error_response.dart';
 import 'package:buytx/core/utils/typedefs.dart';
 import 'package:buytx/src/auth/data/model/user_data_model.dart';
 import 'package:buytx/src/auth/domain/entity/userRequest.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDataSource {

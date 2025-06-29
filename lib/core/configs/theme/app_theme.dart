@@ -6,12 +6,12 @@ class AppTheme {
   static final lightTheme = ThemeData(
     primaryColor: AppColors.lightPrimary,
 
-    fontFamily: 'Hacen Tunisia',
+    fontFamily: 'jazeera',
     scaffoldBackgroundColor: AppColors.lightBackground,
-
     secondaryHeaderColor: Color(0xff12ADD8),
     colorScheme: ColorScheme.dark(
       onSurface: Color(0xffE8ECE8),
+      surfaceContainer: Color(0xffEDE059),
       primaryFixed: AppColors.lightPrimary,
       primaryFixedDim: Colors.grey,
       surface: AppColors.lightBackground,
@@ -19,6 +19,7 @@ class AppTheme {
       onBackground: AppColors.lightButton,
       brightness: Brightness.light,
       inversePrimary: Colors.grey,
+      inverseSurface: Color(0xff545454),
       primaryContainer: AppColors.lightBackground,
     ),
     textTheme: AppText.lightText,
@@ -36,6 +37,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.darkBackground,
     textTheme: AppText.darkText,
     colorScheme: ColorScheme.dark(
+      surfaceContainer: Color(0xff00467C).withOpacity(0.35),
       primaryFixed: Colors.white,
       primaryFixedDim: AppColors.darkPrimary,
       onSurface: AppColors.darkBackground,
@@ -44,6 +46,7 @@ class AppTheme {
       onBackground: AppColors.darkButton,
       brightness: Brightness.dark,
       inversePrimary: Colors.white,
+      inverseSurface: Colors.white,
       primaryContainer: AppColors.black,
     ),
     // fontFamily: 'CircularStd',

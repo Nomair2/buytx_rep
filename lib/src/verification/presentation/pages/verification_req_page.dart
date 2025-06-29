@@ -16,20 +16,18 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
     text: 'حساب فردي (شخصي)',
   );
 
-  int selectedMonth = DateTime.now().month;
-  int selectedDay = DateTime.now().day;
-  int selectedYear = DateTime.now().year;
-
   int _currentStep = 0;
 
   // Stage 1
-  String? _accountType = 'حساب فردي (شخصي)';
+  // String? _accountType = 'حساب فردي (شخصي)';
   final List<String> _accountTypes = ['حساب فردي (شخصي)', 'حساب شركة'];
 
   // Stage 2
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
-  DateTime? _birthDate;
+
+  bool isCompany(String type) => type == _accountTypes[1] ? true : false;
 
   // Stage 3
   List<ImageProvider?> _images = [null, null, null];
@@ -49,10 +47,29 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
   void _pickDate() async {
     final DateTime? date = await showDatePicker(
       context: context,
-      initialDate: DateTime(selectedYear, selectedMonth, selectedDay),
-      firstDate: DateTime(2000),
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green, // header background color
+              onPrimary: Colors.white, // header text color
+              onSurface: Colors.black, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.green, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
+    _dateController.text = "${date!.month}-${date.day}-${date.year}";
   }
 
   Widget _buildStepIndicator() {
@@ -138,7 +155,7 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
               hint: null,
               selectedItemBuilder: (context) => [SizedBox()],
               padding: EdgeInsets.only(left: 20),
-              value: _accountType,
+              value: typeAccount.text,
               menuWidth: 200,
               icon: Icon(Icons.keyboard_arrow_down_outlined),
               underline: SizedBox.shrink(),
@@ -204,146 +221,82 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
 
         TextField(
           controller: _nameController,
+          style: TextStyle(color: Colors.black),
+          cursorColor: Colors.black,
           textAlign: TextAlign.right,
           decoration: InputDecoration(
-            hintText: 'الاسم الكامل',
+            hintText:
+                isCompany(typeAccount.text!) ? 'اسم الشركة' : 'الاسم الكامل',
             hintStyle: TextStyle(color: Colors.black),
+            focusedBorder: _border(),
             border: _border(),
             enabledBorder: _border(),
             disabledBorder: _border(),
             suffixIcon: Icon(
-              Icons.person,
+              isCompany(typeAccount.text!) ? Icons.apartment : Icons.person,
               color: Theme.of(context).primaryColor,
             ),
             filled: true,
             fillColor: Colors.white,
           ),
         ),
-        const SizedBox(height: 16),
-        TextField(
-          readOnly: true,
-          controller: _nameController,
-          textAlign: TextAlign.right,
-          decoration: InputDecoration(
-            // hintText: 'الاسم الكامل',
-            hintStyle: TextStyle(color: Colors.black),
-            border: _border(),
-            enabledBorder: _border(),
-            disabledBorder: _border(),
-            prefixIcon: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // MM
-                Row(
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Colors.black,
-                    ),
-                    Text(
-                      "MM: $selectedMonth",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
+        isCompany(typeAccount.text!)
+            ? SizedBox.shrink()
+            : const SizedBox(height: 16),
+        isCompany(typeAccount.text!)
+            ? SizedBox.shrink()
+            : TextField(
+              readOnly: true,
+              controller: _dateController,
+              textAlign: TextAlign.right,
+              style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                hintText: 'MM:DD:YYYY',
+                hintStyle: TextStyle(color: Colors.black),
+                border: _border(),
+                enabledBorder: _border(),
+                focusedBorder: _border(),
+                disabledBorder: _border(),
+                prefixIcon: GestureDetector(
+                  onTap: () {
+                    _pickDate();
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    color: Colors.black,
+                  ),
                 ),
-                // DD
-                Row(
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Colors.black,
-                    ),
-                    Text(
-                      "DD: $selectedDay",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
+                suffixIcon: Icon(
+                  Icons.date_range,
+                  color: Theme.of(context).primaryColor,
                 ),
-                // YYYY
-                Row(
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Colors.black,
-                    ),
-                    Text(
-                      "YYYY: $selectedYear",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              ],
+                filled: true,
+                fillColor: Colors.white,
+              ),
             ),
-            suffixIcon: Icon(
-              Icons.date_range,
-              color: Theme.of(context).primaryColor,
-            ),
-            filled: true,
-            fillColor: Colors.white,
-          ),
-        ),
-        Container(
-          // padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.grey.shade100,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // MM
-              Row(
-                children: [
-                  Icon(Icons.keyboard_arrow_down_outlined, color: Colors.black),
-                  Text(
-                    "MM: $selectedMonth",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              // DD
-              Row(
-                children: [
-                  Icon(Icons.keyboard_arrow_down_outlined, color: Colors.black),
-                  Text(
-                    "DD: $selectedDay",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              // YYYY
-              Row(
-                children: [
-                  Icon(Icons.keyboard_arrow_down_outlined, color: Colors.black),
-                  Text(
-                    "YYYY: $selectedYear",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              // Date Picker Button
-              IconButton(
-                onPressed: _pickDate,
-                icon: const Icon(Icons.date_range, color: Colors.red),
-                tooltip: "Pick Date",
-              ),
-            ],
-          ),
-        ),
-
         const SizedBox(height: 16),
         TextField(
           controller: _idController,
+          style: TextStyle(color: Colors.black),
           textAlign: TextAlign.right,
+          cursorColor: Colors.black,
+
+          keyboardType: TextInputType.numberWithOptions(),
           decoration: InputDecoration(
-            hintText: 'الاسم الكامل',
+            hintText:
+                isCompany(typeAccount.text!)
+                    ? 'رقم الترخيص أو السجل التجاري'
+                    : 'رقم الهوية الشخصية',
             hintStyle: TextStyle(color: Colors.black),
             border: _border(),
             enabledBorder: _border(),
             disabledBorder: _border(),
+            focusedBorder: _border(),
             suffixIcon: Icon(
-              Icons.account_box_rounded,
+              isCompany(typeAccount.text!)
+                  ? Icons.subtitles
+                  : Icons.account_box_rounded,
               color: Theme.of(context).primaryColor,
             ),
             filled: true,
@@ -355,16 +308,16 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
     );
   }
 
-  Widget _buildStage3() {
+  Widget _buildStage3(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'رفع الصور',
           style: TextStyle(
             fontSize: 20,
-            color: Color(0xFF8BC34A),
+            color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -372,72 +325,96 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(3, (i) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: GestureDetector(
-                onTap: () {
-                  // TODO: Implement image picker
-                },
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color:
-                          i == 2
-                              ? const Color(0xFF8BC34A)
-                              : Colors.grey.shade300,
-                      width: 2,
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    // width: 70,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300, width: 2),
                     ),
-                  ),
-                  child:
-                      _images[i] != null
-                          ? ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image(image: _images[i]!, fit: BoxFit.cover),
-                          )
-                          : i == 2
-                          ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.add_photo_alternate,
-                                color: Color(0xFF8BC34A),
-                                size: 32,
+                    child:
+                        _images[i] != null
+                            ? ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image(
+                                image: _images[i]!,
+                                fit: BoxFit.cover,
                               ),
-                              Text(
-                                'إضافة صور',
-                                style: TextStyle(
+                            )
+                            : i == 2
+                            ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.add_photo_alternate,
                                   color: Color(0xFF8BC34A),
-                                  fontSize: 12,
+                                  size: 32,
                                 ),
-                              ),
-                            ],
-                          )
-                          : const Icon(
-                            Icons.image,
-                            color: Colors.grey,
-                            size: 32,
-                          ),
+                                Text(
+                                  'إضافة صور',
+                                  style: TextStyle(
+                                    color: Color(0xFF8BC34A),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            )
+                            : const Icon(
+                              Icons.image,
+                              color: Colors.grey,
+                              size: 32,
+                            ),
+                  ),
                 ),
               ),
             );
           }),
         ),
         const SizedBox(height: 16),
-        const Align(
+        Align(
           alignment: Alignment.centerRight,
-          child: Text(
-            'توضيح: يجب رفع\n'
-            'صورة من الهوية (الوجه الأمامي)\n'
-            'صورة من الهوية (الوجه الخلفي)\n'
-            'صورة شخصية لك تحمل الهوية الشخصية',
-            style: TextStyle(color: Colors.grey, fontSize: 13, height: 1.6),
-            textAlign: TextAlign.right,
+          child: Text.rich(
+            // textAlig
+            //n: TextAlign.end,
+            TextSpan(
+              text: 'توضيح:',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 14,
+              ),
+              children: [
+                TextSpan(
+                  text:
+                      'توضيح: يجب رفع\n'
+                      'صورة من الهوية (الوجه الأمامي)\n'
+                      'صورة من الهوية (الوجه الخلفي)\n'
+                      'صورة شخصية لك تحمل الهوية الشخصية',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+        // const Align(
+        //   alignment: Alignment.centerRight,
+        //   child: Text(
+        //     'توضيح: يجب رفع\n'
+        //     'صورة من الهوية (الوجه الأمامي)\n'
+        //     'صورة من الهوية (الوجه الخلفي)\n'
+        //     'صورة شخصية لك تحمل الهوية الشخصية',
+        //     style: TextStyle(color: Colors.grey, fontSize: 13, height: 1.6),
+        //     textAlign: TextAlign.right,
+        //   ),
+        // ),
         _buildNextButton('إرسال', isLast: true),
       ],
     );
@@ -581,7 +558,7 @@ class _VerificationReqPageState extends State<VerificationReqPage> {
                           ? _buildStage1(size)
                           : _currentStep == 1
                           ? _buildStage2()
-                          : _buildStage3(),
+                          : _buildStage3(size),
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ class AuthTextField extends StatelessWidget {
   final TextEditingController controller;
   Widget? preIcon;
   Widget? sufIcon;
+  Color? colorbg;
   String? Function(String?)? validtor;
   TextStyle? hintStyle;
   AuthTextField({
@@ -14,6 +15,7 @@ class AuthTextField extends StatelessWidget {
     required this.text,
     required this.controller,
     this.scure,
+    this.colorbg,
     this.hintStyle,
     this.validtor,
     this.preIcon,
@@ -41,7 +43,6 @@ class AuthTextField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         hintText: text,
-
         hintStyle:
             hintStyle ??
             const TextStyle(
@@ -59,7 +60,7 @@ class AuthTextField extends StatelessWidget {
         hintMaxLines: 1,
         contentPadding: const EdgeInsets.only(left: 14, top: 0, bottom: 0),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.onBackground,
+        fillColor: colorbg ?? Theme.of(context).colorScheme.onBackground,
         border: _inputBorder,
         // enabledBorder: _inputBorder,
         focusedBorder: _inputBorder,

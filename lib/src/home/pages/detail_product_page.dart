@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:buytx/src/home/pages/product_dialog.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class DetailProductPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onSurface,
       body: Padding(
-        padding: EdgeInsets.only(top: 25, left: 19, right: 19),
+        padding: EdgeInsets.only(top: 25, left: 15, right: 15),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -582,7 +583,9 @@ class DetailProductPage extends StatelessWidget {
           colors: Colors.white,
           icons: Icons.more_vert,
           radius: 10,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(context: context, builder: (context) => ProductDialog());
+          },
           size: 25,
         ),
       ],

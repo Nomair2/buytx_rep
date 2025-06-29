@@ -175,6 +175,7 @@ class _CreateWindowState extends State<CreateWindow> {
                     child: Material(
                       child: CustomTextFieldArea(
                         windowController: windowContentController,
+                        hint: "اكتب تفاصيل النافذة",
                       ),
                     ),
                   ),
@@ -270,9 +271,16 @@ class CustomTextField extends StatelessWidget {
 
 //======
 class CustomTextFieldArea extends StatelessWidget {
-  const CustomTextFieldArea({super.key, required this.windowController});
+  const CustomTextFieldArea({
+    super.key,
+    required this.windowController,
+    required this.hint,
+    this.hintStyle,
+  });
 
   final TextEditingController windowController;
+  final String hint;
+  final TextStyle? hintStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -281,8 +289,8 @@ class CustomTextFieldArea extends StatelessWidget {
       // maxLength: 4,
       maxLines: 6,
       decoration: InputDecoration(
-        hintText: "اكتب تفاصيل النافذة",
-        hintStyle: Theme.of(context).textTheme.bodySmall,
+        hintText: hint,
+        hintStyle: hintStyle ?? Theme.of(context).textTheme.bodySmall,
         hintTextDirection: TextDirection.rtl,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
