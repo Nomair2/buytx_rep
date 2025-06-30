@@ -14,11 +14,19 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc() : super(ProductsInitial()) {
     on<ProductsEvent>((event, emit) {});
     on<FetchProducts>(_fetchProducts);
+    on<AddProduct>(_addProduct);
   }
 
   _fetchProducts(event, emit) async {
     List<Product> products =
         await remoteProductsDataSource.getProductsBasedOnFilters();
+    print(products.length);
     emit(ProductsReady(products.map((e) => ProductManager(e)).toList()));
+  }
+
+  _addProduct(AddProduct event, emit) async {
+    await remoteProductsDataSource.addProduct(event.product);
+    //refetch products
+    add(FetchProducts());
   }
 }

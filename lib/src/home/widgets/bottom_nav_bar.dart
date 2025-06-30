@@ -1,4 +1,6 @@
 import 'package:buytx/src/chat/presentaion/bloc/getMessages/messages_bloc.dart';
+import 'package:buytx/src/home/data/product.dart' as prod;
+import 'package:buytx/src/home/domain/products/bloc/products_bloc.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,23 +168,53 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ],
             ),
           ),
-          Center(
-            // left: size.width * 0.4,
-            child: AnimatedContainer(
-              duration: Duration(seconds: 1), // مدة التغيير
-              curve: Curves.easeInOut, // منحنى الحركة
-              constraints: BoxConstraints(minHeight: 50, minWidth: 50.875),
-              // height: size.height * 0.07,
-              // width: size.width * 0.14,
-              margin: EdgeInsets.only(bottom: 15),
-              decoration: BoxDecoration(
-                color:
-                    widget.changeColor
-                        ? Theme.of(context).secondaryHeaderColor
-                        : Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(60),
+          GestureDetector(
+            onTap: () {
+              context.read<ProductsBloc>().add(
+                AddProduct(
+                  prod.Product(
+                    title: "IPhone",
+                    price: prod.Price(amount: 10, currency: "SYP"),
+                    description: "A Phone, which is very overpriced.",
+                    category: "683483dde483119f4991d6b3",
+                    phone: "+963994935356",
+                    location: prod.ProductLocation(
+                      location: "682130e68c44576b824557df",
+                      details: "Near Safita",
+                    ),
+                    condition: "شراء",
+                    quantity: 2,
+                    images: [
+                      prod.ImageInfo(
+                        high: "products/1748561481788_1000178477.jpg",
+                        med: "products/1748561482679_1000178477_low.jpg",
+                        low: "products/1748561482679_1000178477_low.jpg",
+                      ),
+                    ],
+                    videos: ["products/1746109631512_1000003227.mp4"],
+                    tags: ["الكترونيات", "جديد", "iPhone", "smartphone"],
+                  ),
+                ),
+              );
+            },
+            child: Center(
+              // left: size.width * 0.4,
+              child: AnimatedContainer(
+                duration: Duration(seconds: 1), // مدة التغيير
+                curve: Curves.easeInOut, // منحنى الحركة
+                constraints: BoxConstraints(minHeight: 50, minWidth: 50.875),
+                // height: size.height * 0.07,
+                // width: size.width * 0.14,
+                margin: EdgeInsets.only(bottom: 15),
+                decoration: BoxDecoration(
+                  color:
+                      widget.changeColor
+                          ? Theme.of(context).secondaryHeaderColor
+                          : Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(60),
+                ),
+                child: Icon(Icons.add, size: 40),
               ),
-              child: Icon(Icons.add, size: 40),
             ),
           ),
         ],

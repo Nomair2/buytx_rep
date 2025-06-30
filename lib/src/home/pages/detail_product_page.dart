@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:buytx/src/home/domain/products/bloc/products_bloc.dart';
+import 'package:buytx/src/home/domain/products/product_manager.dart';
 import 'package:buytx/src/home/pages/product_dialog.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:buytx/core/common/widgets/custom_choose_button.dart';
@@ -14,7 +17,9 @@ import 'package:buytx/src/home/pages/product_owner_page.dart';
 import 'package:buytx/src/home/widgets/customCircularButton.dart';
 
 class DetailProductPage extends StatelessWidget {
-  const DetailProductPage({super.key});
+  const DetailProductPage({super.key, required this.productID});
+
+  final String productID;
 
   static String name = 'detail';
 
@@ -23,30 +28,40 @@ class DetailProductPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onSurface,
-      body: Padding(
-        padding: EdgeInsets.only(top: 25, left: 15, right: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _appBar(context),
-              SizedBox(height: size.height * 0.02),
-              _status(context),
-              SizedBox(height: size.height * 0.03),
-              _info(context, size),
-              SizedBox(height: size.height * 0.05),
-              _images(size),
-              SizedBox(height: size.height * 0.05),
-              _description(context),
-              SizedBox(height: size.height * 0.05),
-              _comments(context, size),
-              SizedBox(height: size.height * 0.08),
-              _similar(size, context),
-              // SizedBox(height: size.height * 0.05),
-              _connectButton(size, context),
-              SizedBox(height: size.height * 0.05),
-            ],
-          ),
-        ),
+      body: BlocBuilder<ProductsBloc, ProductsState>(
+        builder: (context, state) {
+          if (state is ProductsReady) {
+            ProductManager productManage = state.products.firstWhere(
+              (e) => e.value.id == productID,
+            );
+            return Padding(
+              padding: EdgeInsets.only(top: 25, left: 15, right: 15),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _appBar(context),
+                    SizedBox(height: size.height * 0.02),
+                    _status(context),
+                    SizedBox(height: size.height * 0.03),
+                    _info(context, size),
+                    SizedBox(height: size.height * 0.05),
+                    _images(size),
+                    SizedBox(height: size.height * 0.05),
+                    _description(context),
+                    SizedBox(height: size.height * 0.05),
+                    _comments(context, size),
+                    SizedBox(height: size.height * 0.08),
+                    _similar(size, context),
+                    // SizedBox(height: size.height * 0.05),
+                    _connectButton(size, productManage, context),
+                    SizedBox(height: size.height * 0.05),
+                  ],
+                ),
+              ),
+            );
+          }
+          return Center(child: Text("المنتج غير متاح"));
+        },
       ),
     );
   }
@@ -65,7 +80,11 @@ class DetailProductPage extends StatelessWidget {
     );
   }
 
-  _connectButton(Size size, BuildContext context) {
+  _connectButton(
+    Size size,
+    ProductManager productManager,
+    BuildContext context,
+  ) {
     return Container(
       width: size.width,
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -88,7 +107,7 @@ class DetailProductPage extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            '1500\$',
+            "${productManager.value.price.amount.toString()} ${productManager.value.price.currency}",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
           ),
         ],
@@ -393,7 +412,7 @@ class DetailProductPage extends StatelessWidget {
       children: [
         Text('العروض المشابهة', style: Theme.of(context).textTheme.bodySmall),
         SizedBox(height: size.height * 0.05),
-        Container(
+        SizedBox(
           height: size.height * 0.8,
           width: size.width,
           child: GridView.builder(

@@ -10,3 +10,8 @@ sealed class ProductsEvent extends Equatable {
 final class FetchProducts extends ProductsEvent {
   //Params for later
 }
+
+final class AddProduct extends ProductsEvent {
+  final Product product;
+  const AddProduct(this.product);
+}

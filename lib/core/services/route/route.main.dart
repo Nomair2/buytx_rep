@@ -77,9 +77,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/detail',
-      name: DetailProductPage.name,
+      name: "detail",
       builder: (context, state) {
-        return DetailProductPage();
+        print(state.extra);
+        return DetailProductPage(productID: state.extra as String);
       },
     ),
     GoRoute(

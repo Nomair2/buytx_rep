@@ -7,6 +7,7 @@ part of 'product.dart';
 // **************************************************************************
 
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
+  id: json['_id'] as String?,
   title: json['title'] as String,
   description: json['description'] as String,
   price: Price.fromJson(json['price'] as Map<String, dynamic>),
@@ -21,9 +22,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
           .toList(),
   videos: (json['videos'] as List<dynamic>).map((e) => e as String).toList(),
   tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+  owner: json['owner'] as String?,
 );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
+  '_id': instance.id,
   'title': instance.title,
   'description': instance.description,
   'price': instance.price,
@@ -35,6 +38,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
   'images': instance.images,
   'videos': instance.videos,
   'tags': instance.tags,
+  'owner': instance.owner,
 };
 
 Price _$PriceFromJson(Map<String, dynamic> json) => Price(
@@ -60,9 +64,9 @@ Map<String, dynamic> _$ProductLocationToJson(ProductLocation instance) =>
     };
 
 ImageInfo _$ImageInfoFromJson(Map<String, dynamic> json) => ImageInfo(
-  high: json['high'] as String,
-  med: json['med'] as String,
-  low: json['low'] as String,
+  high: json['high'] as String?,
+  med: json['med'] as String?,
+  low: json['low'] as String?,
 );
 
 Map<String, dynamic> _$ImageInfoToJson(ImageInfo instance) => <String, dynamic>{

@@ -79,49 +79,50 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // context.read<messagesBloc>().add(MessagesLoadingEvent());
-    return BlocProvider(
-      create: (context) => ChooseBloc(),
-      child: Scaffold(
-        body: AnimatedContainer(
-          duration: Duration(seconds: 1), // مدة التغيير
-          curve: Curves.easeInOut, // منحنى الحركة
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                changeColor
-                    ? Theme.of(context).secondaryHeaderColor
-                    : Theme.of(context).primaryColor,
-                Colors.white,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.center,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        SizedBox(height: size.height * 0.04),
-                        _appBar(),
-                        SizedBox(height: size.height * 0.01),
-                        _searching(context),
-                        SizedBox(height: size.height * 0.01),
-                        _products(context, size, changeColor),
-                      ],
-                    ),
-                  ),
+    return SafeArea(
+      child: BlocProvider(
+        create: (context) => ChooseBloc(),
+        child: Scaffold(
+          body: AnimatedContainer(
+            duration: Duration(seconds: 1), // مدة التغيير
+            curve: Curves.easeInOut, // منحنى الحركة
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  changeColor
+                      ? Theme.of(context).secondaryHeaderColor
+                      : Theme.of(context).primaryColor,
+                  Colors.white,
                 ],
+                begin: Alignment.topCenter,
+                end: Alignment.center,
               ),
-              Align(
-                // bottom: 5,
-                alignment: Alignment.bottomCenter,
-                child: BottomNavBar(changeColor: changeColor),
-              ),
-            ],
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          _appBar(),
+                          SizedBox(height: size.height * 0.01),
+                          _searching(context),
+                          SizedBox(height: size.height * 0.01),
+                          _products(context, size, changeColor),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  // bottom: 5,
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavBar(changeColor: changeColor),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -210,7 +211,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               SliverAppBar(
                 floating: true,
                 snap: true,
-                toolbarHeight: 15,
                 backgroundColor: const Color(0xffffffff).withOpacity(0),
                 leadingWidth: double.maxFinite,
                 flexibleSpace: _categories(context, size, changeColor),
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ],
         body: BlocConsumer<ProductsBloc, ProductsState>(
           listener: (context, state) {
-            // TODO: implement listener
+            print(state);
           },
           builder: (context, state) {
             if (state is ProductsReady) {
@@ -244,16 +244,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      context.pushNamed(DetailProductPage.name);
+                      print(state.products[index].value.toJson());
+                      context.pushNamed(
+                        "detail",
+                        extra: state.products[index].value.id,
+                      );
                     },
                     child: ProductCard(
                       changeColor: changeColor,
-                      imagePath: 'assets/images/Rectangle.png',
-                      location: 'حمص',
-                      nameOwner: 'أغيد علوان',
-                      nameProduct: 'iphone 16 pro',
-                      price: '1500',
-                      timing: '10',
+                      imagePath:
+                          state.products[index].value.images.first.high ?? "",
+                      location: state.products[index].value.location.details,
+                      nameOwner:
+                          state.products[index].value.owner ?? "غير محدد",
+                      nameProduct: state.products[index].value.title,
+                      price: state.products[index].value.price.toString(),
+                      timing: state.products[index].value.quantity.toString(),
                     ),
                   );
                 },

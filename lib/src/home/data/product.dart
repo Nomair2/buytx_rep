@@ -4,6 +4,8 @@ part 'product.g.dart';
 
 @JsonSerializable()
 class Product {
+  @JsonKey(name: "_id")
+  final String? id;
   final String title;
   final String description;
   final Price price;
@@ -15,8 +17,10 @@ class Product {
   final List<ImageInfo> images;
   final List<String> videos;
   final List<String> tags;
+  final String? owner;
 
   Product({
+    this.id,
     required this.title,
     required this.description,
     required this.price,
@@ -28,6 +32,7 @@ class Product {
     required this.images,
     required this.videos,
     required this.tags,
+    this.owner,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) =>
@@ -60,11 +65,11 @@ class ProductLocation {
 
 @JsonSerializable()
 class ImageInfo {
-  final String high;
-  final String med;
-  final String low;
+  final String? high;
+  final String? med;
+  final String? low;
 
-  ImageInfo({required this.high, required this.med, required this.low});
+  ImageInfo({this.high, this.med, this.low});
 
   factory ImageInfo.fromJson(Map<String, dynamic> json) =>
       _$ImageInfoFromJson(json);

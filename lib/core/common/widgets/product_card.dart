@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:buytx/core/configs/theme/app_colors.dart';
 
@@ -46,14 +47,26 @@ class ProductCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
-                ),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
               ),
               child: Stack(
                 children: [
+                  Center(
+                    child: Container(
+                      clipBehavior:
+                          Clip.antiAlias, // Ensures content is clipped to borderRadius
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: CachedNetworkImage(
+                        imageUrl: imagePath,
+                        errorWidget: (context, url, error) {
+                          return Text("IMAGE");
+                        },
+                      ),
+                    ),
+                  ),
                   Positioned(
                     top: 10,
                     right: 10,
